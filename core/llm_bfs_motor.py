@@ -205,6 +205,30 @@ class BFSTreeExpander:
 
         return isinstance(sub_concepts, list) and len(sub_concepts) == 0
 
+    @staticmethod
+    def _strip_redundant_keys(node: Dict[str, Any]) -> Dict[str, Any]:
+        """Remove redundant keys from tree to reduce token usage.
+
+        Args:
+            node: Node to clean (creates deep copy)
+
+        Returns:
+            Cleaned node without 'definition' and 'is_leaf_node'
+        """
+        cleaned = {
+            key: value
+            for key, value in node.items()
+            if key not in ('definition', 'is_leaf_node')
+        }
+
+        if 'sub_concepts' in cleaned and isinstance(cleaned['sub_concepts'], list):
+            cleaned['sub_concepts'] = [
+                BFSTreeExpander._strip_redundant_keys(child)
+                for child in cleaned['sub_concepts']
+            ]
+
+        return cleaned
+
     def build_prompt(self, node: Dict[str, Any], current_tree: Dict[str, Any]) -> str:
         """Build expansion prompt for given node.
 
@@ -216,7 +240,7 @@ class BFSTreeExpander:
             Minified JSON prompt string for token efficiency
         """
         prompt_data = deepcopy(self._base_prompt)
-        prompt_data['concept_tree'] = current_tree
+        prompt_data['concept_tree'] = self._strip_redundant_keys(current_tree)
         prompt_data['node_to_expand'] = node
 
         return json.dumps(prompt_data, ensure_ascii=False, separators=(',', ':'))
