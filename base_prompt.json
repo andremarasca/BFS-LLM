@@ -1,5 +1,5 @@
 {
-    "prompt": "Estou desenvolvendo uma árvore de conceitos para organizar informações complexas. Você deve expandir essa estrutura obedecendo integralmente às diretrizes listadas em general_instructions e às restrições de prohibitions. Utilize concept_tree como contexto e concentre-se exclusivamente em node_to_expand, acrescentando sub-conceitos diretamente sob esse nó, mantendo sub_concepts vazios para cada filho criado. Garanta que cada novo conceito siga o formato estabelecido em node_json_schema, com definições técnicas, concisas e sem exemplos. Preserve a hierarquia existente, mantenha os conceitos distintos e não altere nós fora do escopo. Entregue o resultado exatamente no formato descrito em expected_output. A resposta deve conter exclusivamente um único JSON bruto, sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois do JSON. Caso contrário, a resposta é inválida. Se não for possível responder exatamente no formato solicitado, retorne exatamente []. Certifique-se de que os sub-conceitos incluídos sejam relevantes, complementares e agreguem valor técnico.",
+    "prompt": "Estou desenvolvendo uma árvore de conceitos para organizar informações complexas. Você deve expandir essa estrutura obedecendo integralmente às diretrizes listadas em general_instructions e às restrições de prohibitions. Utilize concept_tree como contexto e concentre-se exclusivamente em node_to_expand, acrescentando sub-conceitos diretamente sob esse nó, mantendo sub_concepts vazios para cada filho criado. Garanta que cada novo conceito siga o formato estabelecido em node_json_schema, com definições técnicas, concisas e sem exemplos. Preserve a hierarquia existente, mantenha os conceitos distintos e não altere nós fora do escopo. Entregue o resultado exatamente no formato descrito em expected_output. A saída deve ser exclusivamente uma lista JSON no formato especificado em node_json_schema. A resposta deve conter exclusivamente uma lista JSON bruta, sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois da lista JSON. Se a resposta não puder ser exatamente uma lista JSON, retorne []. Certifique-se de que os sub-conceitos incluídos sejam relevantes, complementares e agreguem valor técnico.",
     "general_instructions": [
         "Cada conceito deve ter nome único e definição clara, concisa e distinta na árvore.",
         "Produza textos técnicos, impessoais e objetivos, mantendo cada campo em sua função sem narrativas, opiniões, justificativas ou exemplos.",
@@ -9,7 +9,7 @@
         "Filhos do nó atual devem ser subtemas técnicos derivados do tema do nó, curtos, distintos entre si e com diversidade de nuances.",
         "sub-conceitos devem ser específicos, complementares e não redundantes.",
         "Se não houver valor técnico em expandir o nó atual, retorne uma lista vazia de sub-conceitos.",
-        "Se a resposta não puder ser entregue exclusivamente como JSON bruto no formato solicitado, deve retornar exatamente []"
+        "A saída deve ser exclusivamente uma lista JSON no formato especificado em node_json_schema. Se a resposta não puder ser exatamente uma lista JSON, retorne []"
     ],
     "prohibitions": [
         "Não adicione conceitos que não estejam diretamente relacionados ao nó que está sendo expandido.",
@@ -19,8 +19,8 @@
         "Não use linguagem coloquial ou informal nas definições; mantenha um tom técnico e profissional.",
         "Não repita conceitos ou definições já presentes na arvore.",
         "Os filhos do nó atual não devem ser semanticamente equivalentes ao nó atual",
-        "Proibido inserir texto fora do JSON",
-        "Narrativas, introduções, comentários ou explicações fora do JSON não são permitidos",
+        "Proibido inserir texto fora da lista JSON",
+        "Narrativas, introduções, comentários ou explicações fora da lista JSON não são permitidos",
         "Não inclua exemplos ou justificativas nas definições dos conceitos.",
         "Não crie sub-conceitos que sejam muito amplos ou vagos; cada sub-conceito deve ter um foco claro.",
         "Não modifique o nó raiz ou qualquer outro nó que não seja o especificado para expansão.",
@@ -28,8 +28,9 @@
         "filhos do nó atual com temas não relacionados ao nó atual",
         "Estritamente proibida a criação de placeholders ou valores genéricos",
         "Não acrescentar filhos do nó atual desnecessários que não agreguem valor técnico",
-        "Proibido usar markdown, blocos de código, acentos graves ou qualquer formato que não seja JSON bruto",
-        "Proibido inserir qualquer caractere antes ou depois do JSON"
+        "Proibido usar markdown, blocos de código, acentos graves ou qualquer formato que não seja uma lista JSON bruta",
+        "Proibido inserir qualquer caractere antes ou depois da lista JSON",
+        "Proibido retornar um objeto JSON quando o esperado é uma lista JSON (array)"
     ],
     "concept_tree": {
         "name": "Modularização de Código e Funções",
@@ -46,12 +47,64 @@
                             {
                                 "name": "Tipo de Retorno",
                                 "definition": "Especificação formal que define a natureza e o formato do valor produzido pela função após sua execução.",
-                                "sub_concepts": []
+                                "sub_concepts": [
+                                    {
+                                        "name": "Tipo de Retorno Simples",
+                                        "definition": "Valor de retorno que representa um único dado, como um número, string ou booleano.",
+                                        "sub_concepts": []
+                                    },
+                                    {
+                                        "name": "Tipo de Retorno Composto",
+                                        "definition": "Valor de retorno que encapsula múltiplos dados, como listas, dicionários ou objetos.",
+                                        "sub_concepts": []
+                                    },
+                                    {
+                                        "name": "Tipo de Retorno Genérico",
+                                        "definition": "Tipo de retorno que pode ser parametrizado, permitindo flexibilidade na definição de funções.",
+                                        "sub_concepts": []
+                                    },
+                                    {
+                                        "name": "Tipo de Retorno Nulo",
+                                        "definition": "Indica que a função não retorna um valor significativo, geralmente representado por 'null' ou 'None'.",
+                                        "sub_concepts": []
+                                    },
+                                    {
+                                        "name": "Tipo de Retorno Assíncrono",
+                                        "definition": "Valor de retorno que representa uma operação que pode ser concluída em um momento futuro, frequentemente utilizado em programação assíncrona.",
+                                        "sub_concepts": []
+                                    }
+                                ]
                             },
                             {
                                 "name": "Tipo de Parâmetros",
                                 "definition": "Declaração que determina a natureza e as restrições dos valores aceitos pela função como entrada.",
-                                "sub_concepts": []
+                                "sub_concepts": [
+                                    {
+                                        "name": "Parâmetro Obrigatório",
+                                        "definition": "Parâmetro que deve ser fornecido obrigatoriamente na chamada da função, sem o qual a execução não pode prosseguir.",
+                                        "sub_concepts": []
+                                    },
+                                    {
+                                        "name": "Parâmetro Opcional",
+                                        "definition": "Parâmetro que pode ser omitido na chamada da função, assumindo um valor padrão se não for fornecido.",
+                                        "sub_concepts": []
+                                    },
+                                    {
+                                        "name": "Parâmetro de Tipo Específico",
+                                        "definition": "Parâmetro que aceita apenas valores de um tipo definido, como inteiro, string ou objeto.",
+                                        "sub_concepts": []
+                                    },
+                                    {
+                                        "name": "Parâmetro de Tipo Variável",
+                                        "definition": "Parâmetro que pode aceitar múltiplos tipos de valores, permitindo maior flexibilidade na entrada.",
+                                        "sub_concepts": []
+                                    },
+                                    {
+                                        "name": "Parâmetro de Referência",
+                                        "definition": "Parâmetro que é passado por referência, permitindo que a função modifique o valor original do argumento.",
+                                        "sub_concepts": []
+                                    }
+                                ]
                             },
                             {
                                 "name": "Modo de Passagem de Parâmetros",
@@ -135,12 +188,64 @@
                     {
                         "name": "Retorno de Funções",
                         "definition": "Mecanismo que entrega um valor resultante da execução da função ao ponto de chamada.",
-                        "sub_concepts": []
+                        "sub_concepts": [
+                            {
+                                "name": "Valor de Retorno",
+                                "definition": "Valor específico que uma função fornece ao ser chamada, representando o resultado de sua execução.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Retorno Antecipado",
+                                "definition": "Prática de finalizar a execução de uma função e retornar um valor antes do término natural do fluxo de controle.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Retorno Múltiplo",
+                                "definition": "Capacidade de uma função retornar mais de um valor simultaneamente, geralmente como uma tupla ou estrutura similar.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Retorno Condicional",
+                                "definition": "Mecanismo que permite a uma função retornar diferentes valores com base em condições específicas durante sua execução.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Efeitos Colaterais no Retorno",
+                                "definition": "Situação em que o valor retornado por uma função pode ser influenciado por estados externos ou variáveis globais.",
+                                "sub_concepts": []
+                            }
+                        ]
                     },
                     {
                         "name": "Funções Puras",
                         "definition": "Funções cujo resultado depende exclusivamente dos valores de entrada e não produz efeitos colaterais.",
-                        "sub_concepts": []
+                        "sub_concepts": [
+                            {
+                                "name": "Imutabilidade",
+                                "definition": "Propriedade de funções puras que garante que os dados de entrada não sejam alterados durante a execução.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Determinismo",
+                                "definition": "Característica de funções puras que assegura que a mesma entrada sempre produzirá a mesma saída.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Composição de Funções",
+                                "definition": "Técnica que permite combinar funções puras para criar novas funções, mantendo a previsibilidade e a clareza.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Testabilidade",
+                                "definition": "Facilidade de testar funções puras devido à ausência de efeitos colaterais e dependências externas.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Paralelismo",
+                                "definition": "Capacidade de executar funções puras em paralelo, uma vez que não há interferência entre as execuções.",
+                                "sub_concepts": []
+                            }
+                        ]
                     }
                 ]
             },
@@ -169,21 +274,28 @@
         "definition": "Mecanismo que entrega um valor resultante da execução da função ao ponto de chamada.",
         "sub_concepts": []
     },
-"node_json_schema": {
-  "type": "array",
-  "items": {
-    "type": "object",
-    "properties": {
-      "name": { "type": "string" },
-      "definition": { "type": "string" },
-      "sub_concepts": {
+    "node_json_schema": {
         "type": "array",
-        "items": {}
-      }
+        "items": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "definition": {
+                    "type": "string"
+                },
+                "sub_concepts": {
+                    "type": "array",
+                    "items": {}
+                }
+            },
+            "required": [
+                "name",
+                "definition",
+                "sub_concepts"
+            ]
+        }
     },
-    "required": ["name", "definition", "sub_concepts"]
-  }
-}
-,
-    "expected_output": "lista de sub-conceitos técnicos distintos relacionados a node_to_expand, cada um com uma definição clara e concisa. A lista deve ser retornada no formato JSON conforme o schema fornecido, sem qualquer texto adicional. A resposta deve conter exclusivamente um único JSON bruto, sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois do JSON. Se não for possível responder exatamente no formato solicitado, retornar exatamente []. Sub-conceitos não devem ter filhos próprios, sempre retornar uma lista vazia para 'sub_concepts' em cada sub-conceito."
+    "expected_output": "A saída deve ser exclusivamente uma lista JSON de sub-conceitos técnicos distintos relacionados a node_to_expand, cada um com uma definição clara e concisa. A lista deve ser retornada no formato JSON conforme o schema fornecido em node_json_schema, sem qualquer texto adicional. A resposta deve conter exclusivamente uma lista JSON bruta (array iniciando com [ e terminando com ]), sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois da lista JSON. Se a resposta não puder ser exatamente uma lista JSON, retorne []. Sub-conceitos não devem ter filhos próprios, sempre retornar uma lista vazia para 'sub_concepts' em cada sub-conceito."
 }
