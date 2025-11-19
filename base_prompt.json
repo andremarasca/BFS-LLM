@@ -1,5 +1,5 @@
 {
-    "prompt": "Estou desenvolvendo uma árvore de conceitos para organizar informações complexas. Você deve expandir essa estrutura obedecendo integralmente às diretrizes listadas em general_instructions e às restrições de prohibitions. Utilize concept_tree como contexto e concentre-se exclusivamente em node_to_expand, acrescentando sub-conceitos diretamente sob esse nó, mantendo sub_concepts vazios para cada filho criado. Garanta que cada novo conceito siga o formato estabelecido em node_json_schema, com definições técnicas, concisas e sem exemplos. Preserve a hierarquia existente, mantenha os conceitos distintos e não altere nós fora do escopo. Entregue o resultado exatamente no formato descrito em expected_output, retornando apenas o JSON atualizado sem texto adicional. Certifique-se de que os sub-conceitos incluídos sejam relevantes, complementares e agreguem valor técnico.",
+    "prompt": "Estou desenvolvendo uma árvore de conceitos para organizar informações complexas. Você deve expandir essa estrutura obedecendo integralmente às diretrizes listadas em general_instructions e às restrições de prohibitions. Utilize concept_tree como contexto e concentre-se exclusivamente em node_to_expand, acrescentando sub-conceitos diretamente sob esse nó, mantendo sub_concepts vazios para cada filho criado. Garanta que cada novo conceito siga o formato estabelecido em node_json_schema, com definições técnicas, concisas e sem exemplos. Preserve a hierarquia existente, mantenha os conceitos distintos e não altere nós fora do escopo. Entregue o resultado exatamente no formato descrito em expected_output. A resposta deve conter exclusivamente um único JSON bruto, sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois do JSON. Caso contrário, a resposta é inválida. Se não for possível responder exatamente no formato solicitado, retorne exatamente []. Certifique-se de que os sub-conceitos incluídos sejam relevantes, complementares e agreguem valor técnico.",
     "general_instructions": [
         "Cada conceito deve ter nome único e definição clara, concisa e distinta na árvore.",
         "Produza textos técnicos, impessoais e objetivos, mantendo cada campo em sua função sem narrativas, opiniões, justificativas ou exemplos.",
@@ -8,7 +8,8 @@
         "Conceitos podem ter zero ou mais sub-conceitos; ao expandir um nó, crie apenas os filhos diretos e deixe sub_concepts vazios.",
         "Filhos do nó atual devem ser subtemas técnicos derivados do tema do nó, curtos, distintos entre si e com diversidade de nuances.",
         "sub-conceitos devem ser específicos, complementares e não redundantes.",
-        "Se não houver valor técnico em expandir o nó atual, retorne uma lista vazia de sub-conceitos."
+        "Se não houver valor técnico em expandir o nó atual, retorne uma lista vazia de sub-conceitos.",
+        "Se a resposta não puder ser entregue exclusivamente como JSON bruto no formato solicitado, deve retornar exatamente []"
     ],
     "prohibitions": [
         "Não adicione conceitos que não estejam diretamente relacionados ao nó que está sendo expandido.",
@@ -18,7 +19,7 @@
         "Não use linguagem coloquial ou informal nas definições; mantenha um tom técnico e profissional.",
         "Não repita conceitos ou definições já presentes na arvore.",
         "Os filhos do nó atual não devem ser semanticamente equivalentes ao nó atual",
-        "Proibido Inserir texto fora do JSON",
+        "Proibido inserir texto fora do JSON",
         "Narrativas, introduções, comentários ou explicações fora do JSON não são permitidos",
         "Não inclua exemplos ou justificativas nas definições dos conceitos.",
         "Não crie sub-conceitos que sejam muito amplos ou vagos; cada sub-conceito deve ter um foco claro.",
@@ -26,7 +27,9 @@
         "Campos fora do schema.",
         "filhos do nó atual com temas não relacionados ao nó atual",
         "Estritamente proibida a criação de placeholders ou valores genéricos",
-        "Não acrescentar filhos do nó atual desnecessários que não agreguem valor técnico"
+        "Não acrescentar filhos do nó atual desnecessários que não agreguem valor técnico",
+        "Proibido usar markdown, blocos de código, acentos graves ou qualquer formato que não seja JSON bruto",
+        "Proibido inserir qualquer caractere antes ou depois do JSON"
     ],
     "concept_tree": {
         "name": "Modularização de Código e Funções",
@@ -96,7 +99,38 @@
                     {
                         "name": "Parâmetros e Argumentos",
                         "definition": "Elementos que definem valores de entrada utilizados por uma função para executar sua operação interna.",
-                        "sub_concepts": []
+                        "sub_concepts": [
+                            {
+                                "name": "Parâmetro Formal",
+                                "definition": "Variável declarada na assinatura de uma função que representa o valor de entrada esperado.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Argumento Real",
+                                "definition": "Valor efetivo fornecido na chamada de uma função que corresponde a um parâmetro formal.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Parâmetro com Valor Padrão",
+                                "definition": "Variável de entrada em uma função que possui um valor pré-definido, utilizado caso nenhum argumento seja fornecido na chamada.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Argumento Posicional",
+                                "definition": "Valor de entrada associado a um parâmetro com base na ordem de sua ocorrência na lista de argumentos da chamada.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Argumento Nomeado",
+                                "definition": "Valor de entrada associado a um parâmetro de forma explícita por meio de seu identificador durante a chamada da função.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Variadic Arguments",
+                                "definition": "Mecanismo que permite a uma função aceitar um número variável ou indefinido de argumentos de entrada.",
+                                "sub_concepts": []
+                            }
+                        ]
                     },
                     {
                         "name": "Retorno de Funções",
@@ -131,8 +165,8 @@
         ]
     },
     "node_to_expand": {
-        "name": "Parâmetros e Argumentos",
-        "definition": "Elementos que definem valores de entrada utilizados por uma função para executar sua operação interna.",
+        "name": "Retorno de Funções",
+        "definition": "Mecanismo que entrega um valor resultante da execução da função ao ponto de chamada.",
         "sub_concepts": []
     },
     "node_json_schema": {
@@ -144,5 +178,5 @@
             }
         ]
     },
-    "expected_output": "lista de sub-conceitos técnicos distintos relacionados a node_to_expand, cada um com uma definição clara e concisa. A lista deve ser retornada no formato JSON conforme o schema fornecido, sem qualquer texto adicional fora do JSON. Sub-conceitos não devem ter filhos próprios, sempre retornar uma lista vazia para 'sub_concepts' em cada sub-conceito."
+    "expected_output": "lista de sub-conceitos técnicos distintos relacionados a node_to_expand, cada um com uma definição clara e concisa. A lista deve ser retornada no formato JSON conforme o schema fornecido, sem qualquer texto adicional. A resposta deve conter exclusivamente um único JSON bruto, sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois do JSON. Se não for possível responder exatamente no formato solicitado, retornar exatamente []. Sub-conceitos não devem ter filhos próprios, sempre retornar uma lista vazia para 'sub_concepts' em cada sub-conceito."
 }
