@@ -1,0 +1,28 @@
+# --------------------------------------------
+# REFERÊNCIAS DOS ARQUIVOS
+# --------------------------------------------
+arquivos:
+  base_prompt: "./base_prompt.json"
+  json_schema: "./json_schema.json"
+
+# --------------------------------------------
+# CONFIGURAÇÕES DE EXECUÇÃO
+# --------------------------------------------
+execucao:
+  dry_run: false
+
+# --------------------------------------------
+# MODOS DE EXECUÇÃO DO LLM
+# --------------------------------------------
+llm_modos:
+  usar_local: false # se true, usa modelo Qwen local por padrão
+  caminho_modelo_local: "./models/Qwen2.5-14B-Instruct-Q4_K_M.gguf"
+
+# --------------------------------------------
+# CONFIGURAÇÕES DO CLIENTE LLM
+# --------------------------------------------
+llm_cliente:
+  modelo: "gpt-5.1-chat-latest"
+  temperatura: 0.1
+  max_tokens: 16384
+  timeout_s: 60
