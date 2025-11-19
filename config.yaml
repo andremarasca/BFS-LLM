@@ -60,8 +60,8 @@ llm_cliente:
 # LOGGING E MONITORAMENTO
 # --------------------------------------------
 logging:
-  nivel: "INFO"                 # DEBUG, INFO, WARNING, ERROR
-  salvar_em_arquivo: true       # salva logs em arquivo
+  nivel: "DEBUG"                 # DEBUG, INFO, WARNING, ERROR
+  salvar_em_arquivo: false       # salva logs em arquivo
   arquivo_log: "./bfs_motor.log"
   mostrar_progresso: true       # barra de progresso no terminal
   log_cada_no: true             # loga cada nó processado

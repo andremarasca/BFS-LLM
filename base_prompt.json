@@ -113,16 +113,19 @@
             {
                 "name": "Classes",
                 "definition": "Estruturas que encapsulam dados e comportamentos relacionados, permitindo a criação de objetos com propriedades e métodos.",
+                "is_leaf_node": true,
                 "sub_concepts": []
             },
             {
                 "name": "Módulos",
                 "definition": "Arquivos que contêm definições de funções, classes e variáveis, facilitando a organização e reutilização do código.",
+                "is_leaf_node": true,
                 "sub_concepts": []
             },
             {
                 "name": "Pacotes",
                 "definition": "Coleções de módulos organizados em diretórios, permitindo uma estrutura hierárquica para grandes projetos.",
+                "is_leaf_node": true,
                 "sub_concepts": []
             }
         ]

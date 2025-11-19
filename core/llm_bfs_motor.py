@@ -205,16 +205,18 @@ class BFSTreeExpander:
 
         return isinstance(sub_concepts, list) and len(sub_concepts) == 0
 
-    def build_prompt(self, node: Dict[str, Any]) -> str:
+    def build_prompt(self, node: Dict[str, Any], current_tree: Dict[str, Any]) -> str:
         """Build expansion prompt for given node.
 
         Args:
             node: Node to expand
+            current_tree: Current state of concept tree
 
         Returns:
             Formatted prompt string
         """
         prompt_data = deepcopy(self._base_prompt)
+        prompt_data['concept_tree'] = current_tree
         prompt_data['node_to_expand'] = node
 
         return json.dumps(prompt_data, ensure_ascii=False, indent=2)
@@ -383,6 +385,10 @@ class BFSMotor:
         log_config = self._config.get('logging', {})
         level = getattr(logging, log_config.get('nivel', 'INFO'))
 
+        # Clear existing handlers to ensure clean configuration
+        root_logger = logging.getLogger()
+        root_logger.handlers.clear()
+
         handlers = []
 
         if log_config.get('salvar_em_arquivo', True):
@@ -394,7 +400,8 @@ class BFSMotor:
         logging.basicConfig(
             level=level,
             format='%(asctime)s - %(levelname)s - %(message)s',
-            handlers=handlers
+            handlers=handlers,
+            force=True
         )
 
     def _create_validator(self) -> Optional[JsonValidator]:
@@ -474,7 +481,7 @@ class BFSMotor:
         if self._llm_client is None:
             raise RuntimeError("LLM client not set. Call set_llm_client() first.")
 
-        prompt = self._expander.build_prompt(node)
+        prompt = self._expander.build_prompt(node, self._tree)
 
         def _request_operation():
             raw_response = self._llm_client.send_request(prompt)
