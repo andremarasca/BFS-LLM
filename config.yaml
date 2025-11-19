@@ -53,8 +53,7 @@ llm_modos:
 llm_cliente:
   modelo: "gpt-4o-mini"         # modelo OpenAI
   temperatura: 0.1              # determinismo alto
-  max_tokens: 16384             # limite de tokens na resposta
-  timeout_s: 60                 # timeout por requisição
+  timeout_s: 240                # timeout por requisição
 
 # --------------------------------------------
 # LOGGING E MONITORAMENTO

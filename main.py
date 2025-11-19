@@ -67,8 +67,7 @@ def create_llm_client(config: dict):
 
         return LocalQwenLLM(
             model_path=model_path,
-            temperature=config['llm_cliente'].get('temperatura', 0.6),
-            max_tokens=config['llm_cliente'].get('max_tokens', 1024)
+            temperature=config['llm_cliente'].get('temperatura', 0.6)
         )
 
     logging.info("Using OpenAI API")
@@ -85,7 +84,6 @@ def create_llm_client(config: dict):
         api_key=api_key,
         model=llm_config.get('modelo', 'gpt-4o-mini'),
         temperature=llm_config.get('temperatura', 0.1),
-        max_tokens=llm_config.get('max_tokens', 16384),
         timeout_s=llm_config.get('timeout_s', 60)
     )
 

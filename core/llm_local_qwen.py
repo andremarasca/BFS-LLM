@@ -54,7 +54,6 @@ class LocalQwenLLM(BaseLLM):
         self,
         model_path: str,
         temperature: float = 0.6,
-        max_tokens: int = 1024,
         context_size: int = DEFAULT_CONTEXT_SIZE
     ) -> None:
         """Initialize local model client.
@@ -62,7 +61,6 @@ class LocalQwenLLM(BaseLLM):
         Args:
             model_path: Path to GGUF model file
             temperature: Sampling temperature
-            max_tokens: Maximum generation length
             context_size: Model context window size
 
         Raises:
@@ -74,7 +72,6 @@ class LocalQwenLLM(BaseLLM):
 
         config = LLMConfig(
             temperature=temperature,
-            max_tokens=max_tokens,
             timeout_s=60
         )
 
@@ -109,7 +106,6 @@ class LocalQwenLLM(BaseLLM):
         """Execute model inference."""
         return self._model(
             prompt,
-            max_tokens=self.config.max_tokens,
             temperature=self.config.temperature,
             stop=self.STOP_TOKENS
         )

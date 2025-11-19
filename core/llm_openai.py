@@ -216,8 +216,7 @@ class OpenAIRequestBuilder:
         params = {
             "model": model,
             "messages": [{"role": "user", "content": content}],
-            "timeout": self._config.timeout_s,
-            "max_completion_tokens": self._config.max_tokens
+            "timeout": self._config.timeout_s
         }
 
         if self._should_include_temperature():
@@ -245,9 +244,6 @@ class OpenAIRequestBuilder:
         if "v1/responses" in error_msg:
             raise self._build_model_error(params["model"], exc)
 
-        if "max_completion_tokens" in error_msg:
-            return self._retry_with_max_tokens(params, exc)
-
         if "temperature" in error_msg:
             return self._retry_without_temperature(params, exc)
 
@@ -265,20 +261,6 @@ class OpenAIRequestBuilder:
             "gpt-3.5-turbo, o1-preview, o1-mini. "
             f"Original error: {exc}"
         )
-
-    def _retry_with_max_tokens(
-        self,
-        params: Dict[str, Any],
-        original_exc: Exception
-    ) -> str:
-        """Retry request using max_tokens instead of max_completion_tokens."""
-        params.pop("max_completion_tokens", None)
-        params["max_tokens"] = self._config.max_tokens
-
-        try:
-            return self._send_request(params)
-        except Exception as exc:
-            raise RuntimeError(f"Retry failed: {exc}") from original_exc
 
     def _retry_without_temperature(
         self,
@@ -313,7 +295,6 @@ class OpenAILLM(BaseLLM):
         api_key: str,
         model: str = "gpt-4o-mini",
         temperature: float = 0.4,
-        max_tokens: int = 4096,
         timeout_s: int = 60
     ) -> None:
         """Initialize OpenAI client.
@@ -322,12 +303,10 @@ class OpenAILLM(BaseLLM):
             api_key: OpenAI API key
             model: Default model identifier
             temperature: Sampling temperature
-            max_tokens: Maximum response length
             timeout_s: Request timeout in seconds
         """
         config = LLMConfig(
             temperature=temperature,
-            max_tokens=max_tokens,
             timeout_s=timeout_s
         )
 

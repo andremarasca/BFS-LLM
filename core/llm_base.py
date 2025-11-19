@@ -81,22 +81,18 @@ class LLMConfig:
     def __init__(
         self,
         temperature: float = 0.6,
-        max_tokens: int = 4096,
         timeout_s: int = 60
     ) -> None:
         """Initialize configuration with validated parameters.
 
         Args:
             temperature: Sampling temperature (0.0-2.0)
-            max_tokens: Maximum tokens in response
             timeout_s: Request timeout in seconds
         """
         self._validate_temperature(temperature)
-        self._validate_max_tokens(max_tokens)
         self._validate_timeout(timeout_s)
 
         self.temperature = temperature
-        self.max_tokens = max_tokens
         self.timeout_s = timeout_s
 
     @staticmethod
@@ -104,12 +100,6 @@ class LLMConfig:
         """Ensure temperature is within valid range."""
         if not 0.0 <= value <= 2.0:
             raise ValueError(f"Temperature must be in [0.0, 2.0], got {value}")
-
-    @staticmethod
-    def _validate_max_tokens(value: int) -> None:
-        """Ensure max_tokens is positive."""
-        if value <= 0:
-            raise ValueError(f"max_tokens must be positive, got {value}")
 
     @staticmethod
     def _validate_timeout(value: int) -> None:

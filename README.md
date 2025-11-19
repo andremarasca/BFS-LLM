@@ -97,7 +97,6 @@ llm_modos:
 llm_cliente:
   modelo: "gpt-4o-mini"
   temperatura: 0.1
-  max_tokens: 16384
   timeout_s: 60
 ```
 
@@ -257,15 +256,6 @@ python main.py
 ```yaml
 performance:
   delay_entre_requests: 1.0  # segundos
-```
-
-### Output muito longo
-
-**Solução:** Reduzir `max_tokens` em `config.yaml`:
-
-```yaml
-llm_cliente:
-  max_tokens: 8192  # reduzir de 16384
 ```
 
 ## Performance
