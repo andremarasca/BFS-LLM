@@ -4,25 +4,64 @@
 arquivos:
   base_prompt: "./base_prompt.json"
   json_schema: "./json_schema.json"
+  arvore_saida: "./concept_tree_output.json"   # árvore expandida final
 
 # --------------------------------------------
 # CONFIGURAÇÕES DE EXECUÇÃO
 # --------------------------------------------
 execucao:
-  dry_run: false
+  dry_run: false                # se true, simula execução sem chamar LLM
+
+# --------------------------------------------
+# ESTRATÉGIA DE EXPANSÃO BFS
+# --------------------------------------------
+bfs:
+  max_profundidade: 5           # máximo de níveis de profundidade (-1 = ilimitado)
+  max_nos_por_nivel: -1         # máximo de nós a expandir por nível (-1 = ilimitado)
+
+# --------------------------------------------
+# CONTROLE DE QUALIDADE E VALIDAÇÃO
+# --------------------------------------------
+validacao:
+  validar_schema: true          # valida JSON contra schema
+  permitir_duplicados: false    # permite sub-conceitos duplicados na árvore
+
+# --------------------------------------------
+# RETRY E TOLERÂNCIA A FALHAS
+# --------------------------------------------
+retry:
+  max_tentativas: 3             # máximo de tentativas por nó em caso de falha
+  timeout_entre_tentativas: 2   # segundos entre tentativas
+  continuar_em_falha: true      # continua BFS mesmo se um nó falhar
+
+# --------------------------------------------
+# PARALELIZAÇÃO E PERFORMANCE
+# --------------------------------------------
+performance:
+  delay_entre_requests: 0.5     # segundos entre requisições (rate limiting)
 
 # --------------------------------------------
 # MODOS DE EXECUÇÃO DO LLM
 # --------------------------------------------
 llm_modos:
-  usar_local: false # se true, usa modelo Qwen local por padrão
+  usar_local: false             # se true, usa modelo Qwen local por padrão
   caminho_modelo_local: "./models/Qwen2.5-14B-Instruct-Q4_K_M.gguf"
 
 # --------------------------------------------
 # CONFIGURAÇÕES DO CLIENTE LLM
 # --------------------------------------------
 llm_cliente:
-  modelo: "gpt-5.1-chat-latest"
-  temperatura: 0.1
-  max_tokens: 16384
-  timeout_s: 60
+  modelo: "gpt-4o-mini"         # modelo OpenAI
+  temperatura: 0.1              # determinismo alto
+  max_tokens: 16384             # limite de tokens na resposta
+  timeout_s: 60                 # timeout por requisição
+
+# --------------------------------------------
+# LOGGING E MONITORAMENTO
+# --------------------------------------------
+logging:
+  nivel: "INFO"                 # DEBUG, INFO, WARNING, ERROR
+  salvar_em_arquivo: true       # salva logs em arquivo
+  arquivo_log: "./bfs_motor.log"
+  mostrar_progresso: true       # barra de progresso no terminal
+  log_cada_no: true             # loga cada nó processado
