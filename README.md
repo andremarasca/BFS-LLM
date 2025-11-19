@@ -68,6 +68,18 @@ chmod +x run.sh
 ./run.sh
 ```
 
+### Modo 3: Converter árvore JSON em YAML
+
+O utilitário `tools/convert_concept_tree.py` lê um arquivo no formato de árvore conceitual JSON e gera um YAML hierárquico apenas com os nomes dos nós.
+
+```bash
+python tools/convert_concept_tree.py concept_tree.json -o concept_tree.yaml
+```
+
+- O primeiro argumento é o caminho do JSON de entrada.
+- Use `-o` para definir o caminho de saída (`.yaml`). Se omitido, o arquivo é criado ao lado do JSON original.
+- Todos os nós folhas são emitidos como listas simples de nomes, preservando a hierarquia original.
+
 ## Configuração
 
 Editar `config.yaml` para ajustar parâmetros:
