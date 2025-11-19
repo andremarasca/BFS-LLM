@@ -65,7 +65,33 @@
                     {
                         "name": "Escopo de Variáveis em Funções",
                         "definition": "Conjunto de regras que determina a visibilidade e o tempo de vida das variáveis declaradas dentro de funções.",
-                        "sub_concepts": []
+                        "sub_concepts": [
+                            {
+                                "name": "Escopo Local",
+                                "definition": "Delimitação de variáveis acessíveis apenas dentro da função onde foram declaradas.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Escopo Global",
+                                "definition": "Conjunto de variáveis acessíveis em qualquer parte do programa, incluindo funções, quando não sobrepostas por nomes locais.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Escopo Aninhado",
+                                "definition": "Estrutura hierárquica de blocos que define a visibilidade de variáveis declaradas em funções mais externas.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Sombreamento de Variáveis",
+                                "definition": "Fenômeno no qual uma variável local substitui temporariamente o acesso a uma variável de mesmo nome em escopos externos.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Resolução de Identificadores",
+                                "definition": "Processo sistemático que determina de qual escopo uma variável deve ser obtida durante a execução da função.",
+                                "sub_concepts": []
+                            }
+                        ]
                     },
                     {
                         "name": "Parâmetros e Argumentos",
@@ -102,8 +128,8 @@
         ]
     },
     "node_to_expand": {
-        "name": "Assinatura de Funções",
-        "definition": "Estrutura formal que especifica nome, parâmetros e valor de retorno de uma função.",
+        "name": "Parâmetros e Argumentos",
+        "definition": "Elementos que definem valores de entrada utilizados por uma função para executar sua operação interna.",
         "sub_concepts": []
     },
     "node_json_schema": {
