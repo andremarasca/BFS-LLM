@@ -1,21 +1,14 @@
 {
-    "prompt": "Estou desenvolvendo uma arvore de conceitos para organizar informacoes complexas. Você vai me ajudar a construir essa arvore. Cada conceito na arvore pode ter sub-conceitos, e cada conceito deve ser claramente definido. A estrutura da arvore deve ser hierárquica, com conceitos mais gerais no topo e conceitos mais específicos como filhos. Em general_instructions, são fornecidas diretrizes para garantir que a arvore seja bem estruturada e facil de entender. Siga essas instrucoes ao criar e organizar os conceitos na arvore. O teu objetivo é apenas expandir um unico nó da arvore de conceitos com sub-conceitos relevantes e suas definições. Você vai receber a arvore inteira junto de um nó específico para expandir. Adicione sub-conceitos ao nó fornecido, garantindo que cada sub-conceito tenha uma definição clara e concisa. Retorne a arvore atualizada com os novos sub-conceitos adicionados ao nó especificado. Ao expandir um nó, você não vai criar os filhos dos filhos, deixe uma lista vazia, você só precisa criar os filhos do nó atual. Certifique-se de que a estrutura da arvore permaneça hierárquica e organizada.",
+    "prompt": "Estou desenvolvendo uma árvore de conceitos para organizar informações complexas. Você deve expandir essa estrutura obedecendo integralmente às diretrizes listadas em general_instructions e às restrições de prohibitions. Utilize concept_tree como contexto e concentre-se exclusivamente em node_to_expand, acrescentando sub-conceitos diretamente sob esse nó, mantendo sub_concepts vazios para cada filho criado. Garanta que cada novo conceito siga o formato estabelecido em node_json_schema, com definições técnicas, concisas e sem exemplos. Preserve a hierarquia existente, mantenha os conceitos distintos e não altere nós fora do escopo. Entregue o resultado exatamente no formato descrito em expected_output, retornando apenas o JSON atualizado sem texto adicional. Certifique-se de que os sub-conceitos incluídos sejam relevantes, complementares e agreguem valor técnico.",
     "general_instructions": [
-        "Cada conceito deve ter um nome unico e uma definicao clara",
-        "A arvore deve ser organizada de forma que conceitos relacionados estejam proximos uns dos outros",
-        "Conceitos podem ter zero ou mais sub-conceitos",
-        "A definicao de cada conceito deve ser concisa, idealmente em uma ou duas frases",
-        "Evite redundancia; cada conceito deve ser unico na arvore.",
-        "Use uma estrutura de dados apropriada para representar a arvore, como um dicionario aninhado ou uma classe personalizada.",
-        "O conceito raiz deve ser o mais geral possivel, abrangendo todos os outros conceitos na arvore.",
-        "Produzir textos concisos, técnicos, impessoais e objetivos.",
-        "Cada campo deve cumprir sua função sem narrativa, opinião, justificativa ou exemplos.",
-        "descricao_curta deve expressar foco e finalidade sem duplicar objetivo ou definição.",
-        "Subconceitos e observações devem ser específicos, distintos e não redundantes.",
-        "Filhos do nó atual devem ser subtemas técnicos curtos e diferentes entre si",
-        "Priorize diversidade de nuance técnica entre irmãos.",
-        "Filhos do nó atual devem ser derivados do tema do nó atual, não introduzidos aleatoriamente.",
-        "Se não existir valor tecnico em expandir o nó atual, retorne uma lista vazia de sub-conceitos."
+        "Cada conceito deve ter nome único e definição clara, concisa e distinta na árvore.",
+        "Produza textos técnicos, impessoais e objetivos, mantendo cada campo em sua função sem narrativas, opiniões, justificativas ou exemplos.",
+        "A árvore deve manter conceitos relacionados próximos, respeitando uma hierarquia coerente.",
+        "O conceito raiz deve permanecer o mais geral possível, abrangendo todos os demais conceitos.",
+        "Conceitos podem ter zero ou mais sub-conceitos; ao expandir um nó, crie apenas os filhos diretos e deixe sub_concepts vazios.",
+        "Filhos do nó atual devem ser subtemas técnicos derivados do tema do nó, curtos, distintos entre si e com diversidade de nuances.",
+        "sub-conceitos devem ser específicos, complementares e não redundantes.",
+        "Se não houver valor técnico em expandir o nó atual, retorne uma lista vazia de sub-conceitos."
     ],
     "prohibitions": [
         "Não adicione conceitos que não estejam diretamente relacionados ao nó que está sendo expandido.",
@@ -35,20 +28,6 @@
         "Estritamente proibida a criação de placeholders ou valores genéricos",
         "Não acrescentar filhos do nó atual desnecessários que não agreguem valor técnico"
     ],
-    "node_json_schema": {
-        "name": "string",
-        "definition": "string",
-        "sub_concepts": [
-            {
-                "$ref": "#"
-            }
-        ]
-    },
-    "node_to_expand": {
-        "name": "Funções",
-        "definition": "Blocos de código que realizam tarefas específicas e podem ser reutilizados em diferentes partes do programa.",
-        "sub_concepts": []
-    },
     "concept_tree": {
         "name": "Modularização de Código e Funções",
         "definition": "A modularização é um princípio fundamental de programação que permite reutilizar código e facilitar a manutenção de programas.",
@@ -56,7 +35,54 @@
             {
                 "name": "Funções",
                 "definition": "Blocos de código que realizam tarefas específicas e podem ser reutilizados em diferentes partes do programa.",
-                "sub_concepts": []
+                "sub_concepts": [
+                    {
+                        "name": "Assinatura de Funções",
+                        "definition": "Estrutura formal que especifica nome, parâmetros e valor de retorno de uma função.",
+                        "sub_concepts": [
+                            {
+                                "name": "Tipo de Retorno",
+                                "definition": "Especificação formal que define a natureza e o formato do valor produzido pela função após sua execução.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Tipo de Parâmetros",
+                                "definition": "Declaração que determina a natureza e as restrições dos valores aceitos pela função como entrada.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Modo de Passagem de Parâmetros",
+                                "definition": "Indicação do mecanismo utilizado para transmitir valores aos parâmetros da função durante sua invocação.",
+                                "sub_concepts": []
+                            },
+                            {
+                                "name": "Convenção de Nomes",
+                                "definition": "Conjunto de regras formais que define padrões estruturais e sintáticos aplicados ao nome da função.",
+                                "sub_concepts": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Escopo de Variáveis em Funções",
+                        "definition": "Conjunto de regras que determina a visibilidade e o tempo de vida das variáveis declaradas dentro de funções.",
+                        "sub_concepts": []
+                    },
+                    {
+                        "name": "Parâmetros e Argumentos",
+                        "definition": "Elementos que definem valores de entrada utilizados por uma função para executar sua operação interna.",
+                        "sub_concepts": []
+                    },
+                    {
+                        "name": "Retorno de Funções",
+                        "definition": "Mecanismo que entrega um valor resultante da execução da função ao ponto de chamada.",
+                        "sub_concepts": []
+                    },
+                    {
+                        "name": "Funções Puras",
+                        "definition": "Funções cujo resultado depende exclusivamente dos valores de entrada e não produz efeitos colaterais.",
+                        "sub_concepts": []
+                    }
+                ]
             },
             {
                 "name": "Classes",
@@ -75,5 +101,19 @@
             }
         ]
     },
-    "expected_output": "lista de sub-conceitos técnicos distintos relacionados a 'Funções', cada um com uma definição clara e concisa. A lista deve ser retornada no formato JSON conforme o schema fornecido, sem qualquer texto adicional fora do JSON. Sub-conceitos não devem ter filhos próprios, sempre retornar uma lista vazia para 'sub_concepts' em cada sub-conceito."
+    "node_to_expand": {
+        "name": "Assinatura de Funções",
+        "definition": "Estrutura formal que especifica nome, parâmetros e valor de retorno de uma função.",
+        "sub_concepts": []
+    },
+    "node_json_schema": {
+        "name": "string",
+        "definition": "string",
+        "sub_concepts": [
+            {
+                "$ref": "#"
+            }
+        ]
+    },
+    "expected_output": "lista de sub-conceitos técnicos distintos relacionados a node_to_expand, cada um com uma definição clara e concisa. A lista deve ser retornada no formato JSON conforme o schema fornecido, sem qualquer texto adicional fora do JSON. Sub-conceitos não devem ter filhos próprios, sempre retornar uma lista vazia para 'sub_concepts' em cada sub-conceito."
 }
