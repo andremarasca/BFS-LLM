@@ -213,13 +213,13 @@ class BFSTreeExpander:
             current_tree: Current state of concept tree
 
         Returns:
-            Formatted prompt string
+            Minified JSON prompt string for token efficiency
         """
         prompt_data = deepcopy(self._base_prompt)
         prompt_data['concept_tree'] = current_tree
         prompt_data['node_to_expand'] = node
 
-        return json.dumps(prompt_data, ensure_ascii=False, indent=2)
+        return json.dumps(prompt_data, ensure_ascii=False, separators=(',', ':'))
 
     def process_llm_response(
         self,
@@ -441,13 +441,13 @@ class BFSMotor:
         )
 
     def _load_tree(self) -> Dict[str, Any]:
-        """Load initial concept tree from base prompt."""
-        base_prompt_path = self._config['arquivos']['base_prompt']
+        """Load initial concept tree from separate file."""
+        concept_tree_path = self._config['arquivos']['concept_tree']
 
-        with open(base_prompt_path, 'r', encoding='utf-8') as f:
-            base_prompt = json.load(f)
+        with open(concept_tree_path, 'r', encoding='utf-8') as f:
+            tree = json.load(f)
 
-        return deepcopy(base_prompt['concept_tree'])
+        return deepcopy(tree)
 
     def set_llm_client(self, client: BaseLLM) -> None:
         """Set LLM client for expansion.

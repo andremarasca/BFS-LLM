@@ -3,6 +3,7 @@
 # --------------------------------------------
 arquivos:
   base_prompt: "./base_prompt.json"
+  concept_tree: "./concept_tree.json"          # árvore inicial de conceitos
   json_schema: "./json_schema.json"
   arvore_saida: "./concept_tree_output.json"   # árvore expandida final
 
