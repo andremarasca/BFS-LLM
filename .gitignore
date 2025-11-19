@@ -215,3 +215,4 @@ snapshots/
 concept_tree_output.json
 bfs_motor.log
 test_snapshots/
+concept_tree.yaml
