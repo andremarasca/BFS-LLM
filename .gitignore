@@ -208,3 +208,10 @@ __marimo__/
 .vscode/
 .claude/
 models/
+
+# BFS-LLM specific
+llm_traffic/
+snapshots/
+concept_tree_output.json
+bfs_motor.log
+test_snapshots/
