@@ -558,7 +558,7 @@ class BFSMotor:
                 if delay > 0 and i < len(eligible_nodes):
                     time.sleep(delay)
 
-            self._persistence.save_snapshot(self._tree, current_level)
+                self._persistence.save_snapshot(self._tree, current_level)
 
             current_level += 1
 

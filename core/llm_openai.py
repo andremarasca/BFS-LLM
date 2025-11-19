@@ -5,7 +5,7 @@ Implements BaseLLM interface for OpenAI chat completions API.
 
 import json
 import re
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from openai import OpenAI
 
@@ -18,14 +18,14 @@ class JsonExtractor:
     MAX_RESPONSE_LENGTH = 40000
 
     @classmethod
-    def extract(cls, raw: str) -> Dict[str, Any]:
-        """Extract valid JSON object from potentially messy LLM output.
+    def extract(cls, raw: str) -> Union[Dict[str, Any], List[Any]]:
+        """Extract valid JSON object or array from potentially messy LLM output.
 
         Args:
             raw: Raw text response from LLM
 
         Returns:
-            Parsed JSON dictionary
+            Parsed JSON dictionary or list
 
         Raises:
             ValueError: If no valid JSON found or response too long
@@ -57,13 +57,15 @@ class JsonExtractor:
         return text.strip()
 
     @classmethod
-    def _find_json_candidates(cls, text: str) -> List[Tuple[int, int, Dict]]:
-        """Find all valid JSON objects in text."""
+    def _find_json_candidates(cls, text: str) -> List[Tuple[int, int, Union[Dict, List]]]:
+        """Find all valid JSON objects and arrays in text."""
         candidates = []
-        start_positions = [i for i, c in enumerate(text) if c == '{']
+        start_positions = [
+            (i, c) for i, c in enumerate(text) if c in ('{', '[')
+        ]
 
-        for start in start_positions:
-            end = cls._find_matching_brace(text, start)
+        for start, char in start_positions:
+            end = cls._find_matching_bracket(text, start, char)
             if end == -1:
                 continue
 
@@ -76,20 +78,21 @@ class JsonExtractor:
         return candidates
 
     @staticmethod
-    def _find_matching_brace(text: str, start: int) -> int:
-        """Find matching closing brace using stack-based tracking."""
+    def _find_matching_bracket(text: str, start: int, open_char: str) -> int:
+        """Find matching closing bracket using stack-based tracking."""
+        close_char = '}' if open_char == '{' else ']'
         stack = 0
         for i in range(start, len(text)):
-            if text[i] == '{':
+            if text[i] == open_char:
                 stack += 1
-            elif text[i] == '}':
+            elif text[i] == close_char:
                 stack -= 1
                 if stack == 0:
                     return i
         return -1
 
     @staticmethod
-    def _try_parse(json_str: str) -> Optional[Dict]:
+    def _try_parse(json_str: str) -> Optional[Union[Dict, List]]:
         """Attempt to parse JSON with trailing comma correction."""
         fixed = re.sub(r',\s*(?=[}\]])', '', json_str)
         try:
@@ -99,25 +102,32 @@ class JsonExtractor:
 
     @staticmethod
     def _select_best_candidate(
-        candidates: List[Tuple[int, int, Dict]]
-    ) -> Dict:
-        """Select the last (most complete) valid JSON object."""
-        candidates.sort(key=lambda x: x[1])
-        return candidates[-1][2]
+        candidates: List[Tuple[int, int, Union[Dict, List]]]
+    ) -> Union[Dict, List]:
+        """Select the largest (most complete) valid JSON object or array."""
+        candidates.sort(key=lambda x: x[1] - x[0], reverse=True)
+        return candidates[0][2]
 
     @classmethod
-    def _fallback_extraction(cls, text: str) -> Dict[str, Any]:
+    def _fallback_extraction(cls, text: str) -> Union[Dict[str, Any], List[Any]]:
         """Last resort: extract first valid JSON or raise."""
-        start = text.find("{")
-        if start == -1:
+        obj_start = text.find("{")
+        arr_start = text.find("[")
+
+        if obj_start == -1 and arr_start == -1:
             raise ValueError(
-                f"No JSON object found. Response: {text[:200]}..."
+                f"No JSON object or array found. Response: {text[:200]}..."
             )
 
-        end = cls._find_matching_brace(text, start)
+        if arr_start != -1 and (obj_start == -1 or arr_start < obj_start):
+            start, char = arr_start, '['
+        else:
+            start, char = obj_start, '{'
+
+        end = cls._find_matching_bracket(text, start, char)
         if end == -1:
             raise ValueError(
-                f"Unbalanced braces. Response: {text[:200]}..."
+                f"Unbalanced brackets. Response: {text[:200]}..."
             )
 
         json_str = text[start:end + 1]
@@ -341,7 +351,7 @@ class OpenAILLM(BaseLLM):
         return self._request_builder.execute(target_model, content)
 
     @staticmethod
-    def extract_json_from_text(raw: str) -> Dict[str, Any]:
+    def extract_json_from_text(raw: str) -> Union[Dict[str, Any], List[Any]]:
         """Extract JSON from LLM response text.
 
         Convenience method delegating to JsonExtractor.
@@ -350,6 +360,6 @@ class OpenAILLM(BaseLLM):
             raw: Raw LLM response
 
         Returns:
-            Parsed JSON dictionary
+            Parsed JSON dictionary or list
         """
         return JsonExtractor.extract(raw)
