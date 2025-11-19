@@ -508,9 +508,22 @@ class BFSMotor:
         delay = performance_config.get('delay_entre_requests', 0.5)
 
         while True:
-            if max_depth >= 0 and current_level > max_depth:
-                logging.info(f"Reached max depth: {max_depth}")
+            all_nodes_at_level = self._expander.collect_nodes_at_level(
+                self._tree,
+                current_level
+            )
+
+            if not all_nodes_at_level:
+                logging.info(f"No nodes at level {current_level}, BFS completed")
                 break
+
+            if max_depth >= 0 and current_level >= max_depth:
+                logging.info(
+                    f"Level {current_level}: at max_depth limit "
+                    f"({len(all_nodes_at_level)} nodes not expanded)"
+                )
+                current_level += 1
+                continue
 
             eligible_nodes = self._expander.get_eligible_nodes_at_level(
                 self._tree,
@@ -518,8 +531,12 @@ class BFSMotor:
             )
 
             if not eligible_nodes:
-                logging.info(f"No eligible nodes at level {current_level}, stopping")
-                break
+                logging.info(
+                    f"Level {current_level}: no eligible nodes "
+                    f"({len(all_nodes_at_level)} nodes already expanded), skipping"
+                )
+                current_level += 1
+                continue
 
             logging.info(
                 f"Level {current_level}: expanding {len(eligible_nodes)} nodes"
