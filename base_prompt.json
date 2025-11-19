@@ -169,14 +169,21 @@
         "definition": "Mecanismo que entrega um valor resultante da execução da função ao ponto de chamada.",
         "sub_concepts": []
     },
-    "node_json_schema": {
-        "name": "string",
-        "definition": "string",
-        "sub_concepts": [
-            {
-                "$ref": "#"
-            }
-        ]
+"node_json_schema": {
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string" },
+      "definition": { "type": "string" },
+      "sub_concepts": {
+        "type": "array",
+        "items": {}
+      }
     },
+    "required": ["name", "definition", "sub_concepts"]
+  }
+}
+,
     "expected_output": "lista de sub-conceitos técnicos distintos relacionados a node_to_expand, cada um com uma definição clara e concisa. A lista deve ser retornada no formato JSON conforme o schema fornecido, sem qualquer texto adicional. A resposta deve conter exclusivamente um único JSON bruto, sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois do JSON. Se não for possível responder exatamente no formato solicitado, retornar exatamente []. Sub-conceitos não devem ter filhos próprios, sempre retornar uma lista vazia para 'sub_concepts' em cada sub-conceito."
 }
