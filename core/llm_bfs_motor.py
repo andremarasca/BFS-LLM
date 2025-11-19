@@ -65,35 +65,49 @@ class PartialPersistence:
         """
         self._snapshot_dir = Path(snapshot_dir)
         self._snapshot_dir.mkdir(parents=True, exist_ok=True)
+        self._snapshot_counter = 0
 
-    def save_snapshot(self, tree: Dict[str, Any], level: int) -> None:
-        """Save tree snapshot for current BFS level.
+    def save_snapshot(self, tree: Dict[str, Any], level: int, node_index: int = 0) -> None:
+        """Save tree snapshot after each node expansion.
 
         Args:
             tree: Complete concept tree
             level: Current BFS depth level
+            node_index: Index of node within level
         """
-        filename = f"snapshot_level_{level:03d}.json"
+        self._snapshot_counter += 1
+
+        # Save with unique identifier (level + node index)
+        filename = f"snapshot_L{level:03d}_N{node_index:03d}.json"
         filepath = self._snapshot_dir / filename
 
         with filepath.open('w', encoding='utf-8') as f:
             json.dump(tree, f, ensure_ascii=False, indent=2)
 
-        logging.info(f"Snapshot saved: {filepath}")
+        # Always update latest snapshot
+        latest_path = self._snapshot_dir / "snapshot_latest.json"
+        with latest_path.open('w', encoding='utf-8') as f:
+            json.dump(tree, f, ensure_ascii=False, indent=2)
 
-    def save_final(self, tree: Dict[str, Any], output_path: str) -> None:
+        logging.debug(f"Snapshot #{self._snapshot_counter} saved: {filepath}")
+
+    def save_final(self, tree: Dict[str, Any], output_path: str, log_level: str = "debug") -> None:
         """Save final expanded tree.
 
         Args:
             tree: Complete concept tree
             output_path: Destination file path
+            log_level: Logging level ("info" or "debug", default "debug")
         """
         output_file = Path(output_path)
 
         with output_file.open('w', encoding='utf-8') as f:
             json.dump(tree, f, ensure_ascii=False, indent=2)
 
-        logging.info(f"Final tree saved: {output_path}")
+        if log_level == "info":
+            logging.info(f"Final tree saved: {output_path}")
+        else:
+            logging.debug(f"Output file updated: {output_path}")
 
 
 class RetryPolicy:
@@ -579,17 +593,22 @@ class BFSMotor:
 
                 self.expand_node(node)
 
+                # Save snapshot after EACH node expansion
+                self._persistence.save_snapshot(self._tree, current_level, node_index=i)
+
+                # Also save to final output file to prevent data loss
+                output_path = self._config['arquivos']['arvore_saida']
+                self._persistence.save_final(self._tree, output_path)
+
                 if delay > 0 and i < len(eligible_nodes):
                     time.sleep(delay)
-
-                self._persistence.save_snapshot(self._tree, current_level)
 
             current_level += 1
 
         self._ensure_sub_concepts_exist(self._tree)
 
         output_path = self._config['arquivos']['arvore_saida']
-        self._persistence.save_final(self._tree, output_path)
+        self._persistence.save_final(self._tree, output_path, log_level="info")
 
         logging.info("BFS expansion completed successfully")
 

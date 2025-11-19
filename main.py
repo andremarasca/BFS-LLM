@@ -135,6 +135,7 @@ def main() -> int:
 
     except KeyboardInterrupt:
         logging.warning("\nProcess interrupted by user")
+        logging.info("Current state already saved (snapshots are saved after each node expansion)")
         return 1
 
     except Exception as exc:
