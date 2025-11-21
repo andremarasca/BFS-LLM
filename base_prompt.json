@@ -1,61 +1,40 @@
 {
-    "prompt": "Estou desenvolvendo uma árvore de conceitos para organizar informações complexas. Você deve expandir essa estrutura obedecendo integralmente às diretrizes listadas em general_instructions e às restrições de prohibitions. Utilize concept_tree como contexto e concentre-se exclusivamente em node_to_expand, acrescentando sub-conceitos diretamente sob esse nó, mantendo sub_concepts vazios para cada filho criado. Garanta que cada novo conceito siga o formato estabelecido em node_json_schema, com definições técnicas, concisas e sem exemplos. Preserve a hierarquia existente, mantenha os conceitos distintos e não altere nós fora do escopo. Entregue o resultado exatamente no formato descrito em expected_output. A saída deve ser exclusivamente uma lista JSON no formato especificado em node_json_schema.",
-    "general_instructions": [
-        "Cada conceito deve ter nome único e definição clara, concisa e distinta na árvore.",
-        "Produza textos técnicos, impessoais e objetivos, mantendo cada campo em sua função sem narrativas, opiniões, justificativas ou exemplos.",
-        "A árvore deve manter conceitos relacionados próximos, respeitando uma hierarquia coerente.",
-        "O conceito raiz deve permanecer o mais geral possível, abrangendo todos os demais conceitos.",
-        "Conceitos podem ter zero ou mais sub-conceitos; ao expandir um nó, crie apenas os filhos diretos e deixe sub_concepts vazios.",
-        "Filhos do nó atual devem ser subtemas técnicos derivados do tema do nó, curtos, distintos entre si e com diversidade de nuances.",
-        "sub-conceitos devem ser específicos, complementares e não redundantes.",
-        "Se não houver valor técnico em expandir o nó atual, retorne uma lista vazia de sub-conceitos.",
-        "A saída deve ser exclusivamente uma lista JSON no formato especificado em node_json_schema. Se a resposta não puder ser exatamente uma lista JSON, retorne []",
-        "A resposta deve conter exclusivamente uma lista JSON bruta, sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois da lista JSON. Se a resposta não puder ser exatamente uma lista JSON, retorne [].",
-        "Certifique-se de que os sub-conceitos incluídos sejam relevantes, complementares e agreguem valor técnico."
-    ],
-    "prohibitions": [
-        "Não adicione conceitos que não estejam diretamente relacionados ao nó que está sendo expandido.",
-        "Não crie sub-conceitos que sejam muito semelhantes entre si; cada sub-conceito deve ser distinto.",
-        "Não altere a estrutura da arvore além do nó especificado para expansão.",
-        "Não inclua informações irrelevantes ou fora do escopo na definição dos conceitos.",
-        "Não use linguagem coloquial ou informal nas definições; mantenha um tom técnico e profissional.",
-        "Não repita conceitos ou definições já presentes na arvore.",
-        "Os filhos do nó atual não devem ser semanticamente equivalentes ao nó atual",
-        "Proibido inserir texto fora da lista JSON",
-        "Narrativas, introduções, comentários ou explicações fora da lista JSON não são permitidos",
-        "Não inclua exemplos ou justificativas nas definições dos conceitos.",
-        "Não crie sub-conceitos que sejam muito amplos ou vagos; cada sub-conceito deve ter um foco claro.",
-        "Não modifique o nó raiz ou qualquer outro nó que não seja o especificado para expansão.",
-        "Campos fora do schema.",
-        "filhos do nó atual com temas não relacionados ao nó atual",
-        "Estritamente proibida a criação de placeholders ou valores genéricos",
-        "Não acrescentar filhos do nó atual desnecessários que não agreguem valor técnico",
-        "Proibido usar markdown, blocos de código, acentos graves ou qualquer formato que não seja uma lista JSON bruta",
-        "Proibido inserir qualquer caractere antes ou depois da lista JSON",
-        "Proibido retornar um objeto JSON quando o esperado é uma lista JSON (array)"
-    ],
-    "node_json_schema": {
-        "type": "array",
-        "items": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "definition": {
-                    "type": "string"
-                },
-                "sub_concepts": {
-                    "type": "array",
-                    "items": {}
-                }
-            },
-            "required": [
-                "name",
-                "definition",
-                "sub_concepts"
-            ]
-        }
-    },
-    "expected_output": "A saída deve ser exclusivamente uma lista JSON de sub-conceitos técnicos distintos relacionados a node_to_expand, cada um com uma definição clara e concisa. A lista deve ser retornada no formato JSON conforme o schema fornecido em node_json_schema, sem qualquer texto adicional. A resposta deve conter exclusivamente uma lista JSON bruta (array iniciando com [ e terminando com ]), sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois da lista JSON. Se a resposta não puder ser exatamente uma lista JSON, retorne []. Sub-conceitos não devem ter filhos próprios, sempre retornar uma lista vazia para 'sub_concepts' em cada sub-conceito."
+  "prompt": "Expanda exclusivamente node_to_expand criando sub-conceitos técnicos diretos. Use concept_tree apenas como contexto e não modifique nenhum outro nó. Cada sub-conceito deve seguir integralmente node_json_schema, com sub_concepts sempre vazio. A saída deve ser exatamente uma lista JSON bruta. Se não for possível produzir uma lista JSON perfeita, retorne [].",
+
+  "general_instructions": [
+    "Cada sub-conceito deve ter nome único, definição técnica, objetiva, concisa e distinta.",
+    "Linguagem impessoal e sem exemplos, narrativas, opiniões ou justificativas.",
+    "Gerar apenas filhos diretos, mantendo coerência hierárquica e relação semântica estrita.",
+    "Filhos devem ser específicos, complementares, não redundantes e agregar valor técnico.",
+    "Se a expansão não tiver valor técnico real, retornar [].",
+    "A saída deve ser apenas uma lista JSON bruta, sem qualquer caractere externo."
+  ],
+
+  "prohibitions": [
+    "Proibido adicionar conceitos não relacionados ou semelhantes entre si.",
+    "Proibido criar sub-conceitos equivalentes ou próximos ao próprio node_to_expand.",
+    "Proibido alterar nós fora do alvo ou modificar hierarquias existentes.",
+    "Proibido conteúdos vagos, amplos, genéricos ou irrelevantes.",
+    "Proibido linguagem informal.",
+    "Proibido repetir conceitos já existentes na árvore.",
+    "Proibido placeholders.",
+    "Proibido qualquer coisa fora da lista JSON: markdown, blocos de código, acentos graves, comentários, textos ou caracteres externos.",
+    "Proibido retornar objeto JSON; apenas lista JSON é permitida.",
+    "Proibido violar o node_json_schema."
+  ],
+
+  "node_json_schema": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "definition": {"type": "string"},
+        "sub_concepts": {"type": "array", "items": {}}
+      },
+      "required": ["name", "definition", "sub_concepts"]
+    }
+  },
+
+  "expected_output": "A resposta deve ser exclusivamente uma lista JSON bruta contendo sub-conceitos técnicos distintos, cada um seguindo node_json_schema, com sub_concepts sempre vazio. Sem qualquer texto adicional."
 }

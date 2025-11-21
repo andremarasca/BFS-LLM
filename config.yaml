@@ -17,7 +17,7 @@ execucao:
 # ESTRATÉGIA DE EXPANSÃO BFS
 # --------------------------------------------
 bfs:
-  max_profundidade: 5           # máximo de níveis de profundidade (-1 = ilimitado)
+  max_profundidade: 4           # máximo de níveis de profundidade (-1 = ilimitado)
   max_nos_por_nivel: -1         # máximo de nós a expandir por nível (-1 = ilimitado)
 
 # --------------------------------------------
