@@ -1,5 +1,5 @@
 {
-    "prompt": "Estou desenvolvendo uma árvore de conceitos para organizar informações complexas. Você deve expandir essa estrutura obedecendo integralmente às diretrizes listadas em general_instructions e às restrições de prohibitions. Utilize concept_tree como contexto e concentre-se exclusivamente em node_to_expand, acrescentando sub-conceitos diretamente sob esse nó, mantendo sub_concepts vazios para cada filho criado. Garanta que cada novo conceito siga o formato estabelecido em node_json_schema, com definições técnicas, concisas e sem exemplos. Preserve a hierarquia existente, mantenha os conceitos distintos e não altere nós fora do escopo. Entregue o resultado exatamente no formato descrito em expected_output. A saída deve ser exclusivamente uma lista JSON no formato especificado em node_json_schema. A resposta deve conter exclusivamente uma lista JSON bruta, sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois da lista JSON. Se a resposta não puder ser exatamente uma lista JSON, retorne []. Certifique-se de que os sub-conceitos incluídos sejam relevantes, complementares e agreguem valor técnico.",
+    "prompt": "Estou desenvolvendo uma árvore de conceitos para organizar informações complexas. Você deve expandir essa estrutura obedecendo integralmente às diretrizes listadas em general_instructions e às restrições de prohibitions. Utilize concept_tree como contexto e concentre-se exclusivamente em node_to_expand, acrescentando sub-conceitos diretamente sob esse nó, mantendo sub_concepts vazios para cada filho criado. Garanta que cada novo conceito siga o formato estabelecido em node_json_schema, com definições técnicas, concisas e sem exemplos. Preserve a hierarquia existente, mantenha os conceitos distintos e não altere nós fora do escopo. Entregue o resultado exatamente no formato descrito em expected_output. A saída deve ser exclusivamente uma lista JSON no formato especificado em node_json_schema.",
     "general_instructions": [
         "Cada conceito deve ter nome único e definição clara, concisa e distinta na árvore.",
         "Produza textos técnicos, impessoais e objetivos, mantendo cada campo em sua função sem narrativas, opiniões, justificativas ou exemplos.",
@@ -9,7 +9,9 @@
         "Filhos do nó atual devem ser subtemas técnicos derivados do tema do nó, curtos, distintos entre si e com diversidade de nuances.",
         "sub-conceitos devem ser específicos, complementares e não redundantes.",
         "Se não houver valor técnico em expandir o nó atual, retorne uma lista vazia de sub-conceitos.",
-        "A saída deve ser exclusivamente uma lista JSON no formato especificado em node_json_schema. Se a resposta não puder ser exatamente uma lista JSON, retorne []"
+        "A saída deve ser exclusivamente uma lista JSON no formato especificado em node_json_schema. Se a resposta não puder ser exatamente uma lista JSON, retorne []",
+        "A resposta deve conter exclusivamente uma lista JSON bruta, sem markdown, sem blocos de código, sem acentos graves, sem comentários e sem qualquer texto antes ou depois da lista JSON. Se a resposta não puder ser exatamente uma lista JSON, retorne [].",
+        "Certifique-se de que os sub-conceitos incluídos sejam relevantes, complementares e agreguem valor técnico."
     ],
     "prohibitions": [
         "Não adicione conceitos que não estejam diretamente relacionados ao nó que está sendo expandido.",
@@ -32,12 +34,6 @@
         "Proibido inserir qualquer caractere antes ou depois da lista JSON",
         "Proibido retornar um objeto JSON quando o esperado é uma lista JSON (array)"
     ],
-    "concept_tree": {},
-    "node_to_expand": {
-        "name": "Retorno de Funções",
-        "definition": "Mecanismo que entrega um valor resultante da execução da função ao ponto de chamada.",
-        "sub_concepts": []
-    },
     "node_json_schema": {
         "type": "array",
         "items": {
